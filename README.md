@@ -24,7 +24,7 @@ This project implements a search engine in Python for traversing directories and
 1. Clone the repository:
 
     ```bash
-    git clone https://github.com/your-username/search-engine.git
+    git clone git@github.com:marijazhiv/Search-engine.git
     ```
 
 2. Navigate to the project directory:
