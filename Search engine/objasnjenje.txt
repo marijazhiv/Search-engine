@@ -1,0 +1,49 @@
+OBJASNJENJE KORISCENIH STRUKTURA I RADA PROGRAMA
+
+Koriscene strukture podataka: liste, recnici (dictionary), trie i graph (usmereni bez tezina)
+Graph sluzi za povezivanje koja stranica ima link ka kojim stranicama (u cvorovima cuva fajlove a edges su veze izmedju linkova).
+Parser koriscen onaj koji nam je dat sa vezbi + implementiran jedan poseban (objasnjenje dole)
+Na pocetku programa korisnik unosi putanju do direktorijuma.
+Tu se vrsi validacija toga da li je uneta ispravna putanja- da li direktorijum posotoji ili ne.
+Nakon unete putanje (path) podaci se ucitavaju u graph i trie. Izlistaju se fajlovi koji se nalaze u zadatom direktorijumu.
+Printa se default menu- to je kao search bar.
+Tu korisnik ima opciju da promeni direktorijum koji pretrazuje na opciji dva- dakle unese novu putanju (takodje se opet vrsi validacija)
+i moze vrsiti pretragu tog foldera (izabere opciju 1) 
+
+Vrsi se samo pretraga html fajlova: 
+if fajl.endswith(".html"):   
+    print(fajl)
+
+Obilazak stabla je uradjen preko os.walk:
+
+for koren, dirs, fajlovi in os.walk(cvor):
+    for fajl in fajlovi:
+        if fajl.endswith(".html"):
+            putanja=os.path.join(koren, fajl)
+            cvorovi[putanja] = graf.insert_vertex(putanja)
+
+Sortiranje implementirano samostalno- nije koriscena ugradjena opcija sorted.
+Implementiran quick sort koji sortira s leva na desno od najveceg ka najmanjem broju.
+
+Trie sluzi za to da svaki fajl ima svoj trie u kom su izlistane sve reci tog fajla.
+
+Koristila sam i recnik koji cuva podatke koje uzimamo iz grafa, kao kljuc uzima putanju do fajla, a vrednost je lista u kojoj je prva 
+vrednost broj reci u fajlu druga broj linkova u fajlu i treca broj reci u linkovima koji pokazuju na odredjeni fajl.
+Sve ove tri vrednosti uticu na rangiranje- broj reci najvise (zato sam mu dodelila koeficijent 2.2, zatim broj linkova- koeficijent
+sa kojim se mnozi 1.2 i broj reci u linkovima utice najmanje- koef 0.4)
+
+Logicka pretraga radi isto kao i obicna uz neke izmene.
+za AND- se ispunjava uslov da obe reci postoje (presek)
+za OR- dovoljno da postoji samo jedna i soritra po bilo kojoj od te dve koje postoje (uzima bolje rangiranu takodje) (unija)
+za NOT- mora prva rec da postoji samo u tom linku a druge ne sme da bude- tada radi (ako obe psotoje u svakom- ne printa nista) (razlika)
+
+Takodje implementirana je i viserecna pretraga.
+
+Korisnik unosi i broj rezultata, odnosno stranica koje zeli da mu rang prikaze. 
+Ako unese vise nego sto postoji program mu printa smao ono sto postoji.
+Prva stranica po rangu prikazuje kratak isecak od 20 reci pocevsi od prvog mesta gde je pronadjena trazena rec.
+Za ove potrebe implementiran je novi parser koji parsira fajlove na reci, linkove i paragrafe (po tagu p)
+----> jer se objasnjenja kljucnih reci obicno nalaze u tim paragrafima, dakle, da program ne bi za prve rezultate pretrage printao
+reci koje se nalaze u linkovima naslovima i sl
+(ukoliko reci nema u paragrafima, onda printa prvi rezultat na koji naidje a koji sadrzi datu rec- nebitno da li je naslov ili rec
+ u linku)
